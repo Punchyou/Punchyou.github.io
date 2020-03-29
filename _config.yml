@@ -1,5 +1,5 @@
-title: devlopr
-subtitle: A Jekyll Theme Built for Developers
+title: Maria Pantsiou
+subtitle: Sotfware Developer @ARM
 description: >- # this means to ignore newlines until "baseurl:"
   devlopr-jekyll is a Jekyll Theme Built For Developers
 
@@ -24,12 +24,12 @@ urls:
 
 # Edit these details
 
-author_logo: profile.png
-author: John Doe
-author_bio: Hello, My Name is John Doe. I love to Code and Design. devlopr-jekyll is a theme built for developers.
-author_email: "johndoe@gmail.com"
-author_location: India
-author_website_url: "http://johndoe.com"
+author_logo: avatar.png
+author: Maria Pantsiou
+author_bio: Hello, My Name is Maria.
+author_email: "maria.th.pantsiou@gmail.com"
+author_location: UK
+author_website_url: "http://punchyou.github.io"
 
 author_work_experiences:
             - company_name: Google
@@ -66,36 +66,36 @@ author_project_details:
                 visibility: true
 
 # social links
-twitter_username: johndoe
-github_username:  johndoe
-facebook_username: johndoe
-linkedin_username: johndoe
-behance_username: johndoe
-instagram_username: johndoe
-medium_username: johndoe
-telegram_username: johndoe
-dribbble_username: johndoe
-flickr_username: johndoe
+twitter_username: mariapant
+github_username:  Punchyou
+#facebook_username: johndoe
+linkedin_username: maria-pantsiou
+# behance_username: johndoe
+instagram_username: maria.pantsiou
+# medium_username: johndoe
+# telegram_username: johndoe
+# dribbble_username: johndoe
+# flickr_username: johndoe
 
-#for comments using disqus
-disqus_shortname: sujay-kundu
+# #for comments using disqus
+# disqus_shortname: sujay-kundu
 
-# wakatime username (coding activity)
-wakatime_username: sujaykundu777
+# # wakatime username (coding activity)
+# wakatime_username: sujaykundu777
 
-# mailchimp embedded form url (newsletter):
-mailchimp_form_url: https://sujaykundu.us10.list-manage.com/subscribe/post?u=50bab1c85eae24ecfb0f68361&amp;id=3a2dd721d0
+# # mailchimp embedded form url (newsletter):
+# mailchimp_form_url: https://sujaykundu.us10.list-manage.com/subscribe/post?u=50bab1c85eae24ecfb0f68361&amp;id=3a2dd721d0
 
-# formspree (contact form)
-formspree_email: johndoe@gmail.com
+# # formspree (contact form)
+# formspree_email: johndoe@gmail.com
 
 # syntax highlighter
 markdown: kramdown
 highlighter: rouge
 permalink: pretty
 
-# google analytics
-google_analytics: UA-46783401-10
+# # google analytics
+# google_analytics: UA-46783401-10
 
 # Choose what to show ( can be true or false)
 show_author_work_experiences: true
@@ -135,13 +135,13 @@ paginate_path: "/blog/page/:num/"
 collections:
  - products
 
-# Gallery
-defaults:
-  -
-    scope:
-      path: "gallery"
-    values:
-      permalink: /:path/:basename:output_ext
+# # Gallery
+# defaults:
+#   -
+#     scope:
+#       path: "gallery"
+#     values:
+#       permalink: /:path/:basename:output_ext
 
 # Build settings
 
