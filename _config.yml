@@ -11,18 +11,6 @@ urls:
       url: /about
     - text: Blog
       url: /blog
-    - text: Gaming
-      url: /gaming
-    # - text: Shop
-    #   url : /shop
-    # - text: Shop
-    #   url : /shop
-    # - text: Contact Me
-    #   url : /contact
-    # - text: Styleguide
-    #   url: /styleguide
-    # - text: Get Started
-    #   url: /get-started
 
 # Edit these details
 
@@ -99,9 +87,6 @@ permalink: pretty
 # # google analytics
 # google_analytics: UA-46783401-10
 
-# Choose what to show ( can be true or false)
-show_author_work_experiences: true
-show_author_education_details: true
 show_author_project_details: true
 
 # algolia search
@@ -133,9 +118,6 @@ paginate_path: "/blog/page/:num/"
 #   permalinks:
 #     category: '/category/:name/'
 
-# Shop
-# collections:
-#  - products
 
 # # Gallery
 # defaults:
