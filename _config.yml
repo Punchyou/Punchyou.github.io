@@ -1,5 +1,5 @@
 title: Maria Pantsiou
-subtitle: Sotfware Developer @ARM
+subtitle: Software Developer @ARM
 description: >- # this means to ignore newlines until "baseurl:"
   devlopr-jekyll is a Jekyll Theme Built For Developers
 
@@ -48,12 +48,12 @@ author_project_details:
                 project_title: Gamers Hub
                 project_description: A Platform built for Gamers and Game Devs
                 project_url: https://gamershub.in
-                visibility: true
+                visibility: false
               - project_thumbnail: hack4r.PNG
                 project_title: Hack4r
                 project_description: A Platform built for Hackers and Penetration Testers
                 project_url: https://hack4r.com
-                visibility: true
+                visibility: false
 
 # social links
 twitter_username: mariapant
@@ -87,7 +87,7 @@ permalink: pretty
 # # google analytics
 # google_analytics: UA-46783401-10
 
-show_author_project_details: true
+show_author_project_details: false
 
 # algolia search
 algolia:
