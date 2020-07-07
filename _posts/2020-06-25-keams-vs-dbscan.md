@@ -3,7 +3,7 @@ layout: post
 title: kmeans Vs DBSCAN
 author: Maria Pantsiou
 date: '2020-06-25 14:35:23 +0530'
-category: guides
+category: modeling
 summary: kmeans Vs DBSCAN
 thumbnail:
 ---
