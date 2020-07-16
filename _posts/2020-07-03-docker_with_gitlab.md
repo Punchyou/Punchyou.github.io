@@ -20,3 +20,65 @@ The steps that this process follow are:
 4. Deploy to a server from the pushed image
 
 
+After [configuring a gitlab pipeline](https://punchyou.github.io/devops/2020/07/02/ci_cd_gitlab/) and [installing docker](https://punchyou.github.io/devops/2020/07/03/dicker_get_started/#/) you can build or download a docker images within the CI/CD pipeline you've created on gitlab.
+
+### Download a Docker image
+Configure gitlab to download an existing image that containes most of the packages you want, by adding commands to the scripts of the `.gitlab-ci.yml`.
+
+1. Choose in image from the [docker hub](https://hub.docker.com). I use the [python image](https://hub.docker.com/_/python)
+2. Download the image:
+```bash
+docker pull python
+```
+3. Add the following under the `build` job in `.gitlab-ci.yml`:
+```bash
+image: python
+```
+
+
+
+## Steps
+
+1. Add `gitlab-runner` user to the `docker` group (granting `gitlab-runner` full root permissions). On your terminal run:
+
+```bash
+$ sudo usermod -aG docker gitlab-runner
+```
+
+2. Verify that `gitllab-runner` has acces to Docker:
+
+```bash
+$ sudo -u gitlab-runner -H docker info
+
+
+Client:
+ Debug Mode: false
+
+Server:
+ Containers: 19
+  Running: 0
+  Paused: 0
+  Stopped: 19
+ Images: 3
+...
+```
+
+3. Verify that everything works by adding `docker info` to `.gitlab-ci.yml` configuration file you'll find in your projects root directory:
+
+```yml
+before_script:
+  - docker info
+
+build_image:
+  script:
+    - docker build -t my-docker-image .
+    - docker run my-docker-image /script/to/run/tests
+```
+
+Notes:
+
+1. GitLab logs:
+```bash
+/var/log/syslog
+```
+2. When register a runner, choose `docker` as the `executor`

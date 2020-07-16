@@ -146,7 +146,6 @@ Data viz combines the fields of communication, psychology, statistics, and art, 
 
 This is where you evaluate how the success of your model relates to your original business understanding. Does it tackle the problems identified? Does the analysis yield any tangible solutions? If you encountered any new insights during the first iteration of the lifecycle, you can now infuse that knowledge into the next iteration to generate even more powerful insights and unleash the power of data to derive phenomenal results for your business or project.
 
-
 ## Deployment
 The last step of the build phase is executing the build plan for the product. Most software engineers are probably familiar with the trials and tribulations of building a complicated piece of software, but they may not be familiar with. Statisticians, on the other hand, know what it’s like to have dirty data but may have little experience with building higher-quality software. Likewise, individuals in different roles relating to the project, each of whom might possess various experiences and training, will expect and prepare for different things.
 
@@ -159,6 +158,14 @@ After you have a set of models that perform well, you can operationalize them fo
 - Back-end applications
 
 Generally speaking, in a data science project involving statistics, expectations are based either on a notion of statistical significance or on some other concept of the practical usefulness or applicability of those results or both. Statistical significance and practical usefulness are often closely related and are certainly not mutually exclusive.
+
+## CI/CD
+
+Find more information on that [here](https://punchyou.github.io/devops/2020/07/02/ci_cd_gitlab/#/).
+
+Continues integration is more of a continuous process rathen than a single step on its own.
+
+Why don’t we use continuous integration already in ML? Some reasons are cultural, like a low crossover between data science and software engineering communities. Others are technical- for example, to understand your model’s performance, you need to look at metrics like accuracy, specificity, and sensitivity. You might be assisted by data visualizations, like a confusion matrix or loss plot. So pass/fail tests won’t cut it for feedback. Understanding if a model is improved requires some domain knowledge about the problem at hand, so test results need to be reported in an efficient and human-interpretable way
 
 # Ways of work
 The approach that is presented here is the *Structured-case: a methodological framework for buildingtheory in information systems research*. The structured-case research cycle is conceptual-ised in four stages, which have been adapted from prac-tice-based  models  of  organizational  research. While the four stages are described below as inclusive and separate, in practice they are fluid and ill-defined, allowing much iteration between adjacent  stages.  Consequently,  movement  through  thecycle does not follow any set, sequential pattern.
@@ -183,3 +190,4 @@ The approach that is presented here is the *Structured-case: a methodological fr
 1. [Team Data Science Process Documentation (TDSP)](https://docs.microsoft.com/en-us/azure/machine-learning/team-data-science-process/overview) by Microsoft Azure’s blog
 2. [Data Science Life Cycle 101 for Dummies like Me](https://towardsdatascience.com/data-science-life-cycle-101-for-dummies-like-me-e66b47ad8d8f#:~:text=I%27ll%20give%20a%20brief,be%20useful%20in%20my%20experience.) by [Sangeet Moy Das](https://towardsdatascience.com/@sangeet.das)
 3. [Structured-Case: A Methodological Framework for Building Theory in Information Systems Research](https://www.researchgate.net/publication/221407650_Structured-Case_A_Methodological_Framework_for_Building_Theory_in_Information_Systems_Research) by [Paul Anthony Swatman](https://www.researchgate.net/profile/Paul_Swatman)
+4. [What data scientists need to know about DevOps](https://towardsdatascience.com/what-data-scientists-need-to-know-about-devops-2f8bc6660284)

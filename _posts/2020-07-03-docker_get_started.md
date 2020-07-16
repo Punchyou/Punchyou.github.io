@@ -67,7 +67,7 @@ When you use the `docker pull` or `docker run commands`, the required images are
 ## Docker Objects
 
 ### Images
-An image includes everything needed to run an application - the code or binary, runtimes, dependencies, and any other filesystem objects required. Is a read-only **template with instructions** for creating a Docker container. Often, an image is based on another image (like an Ubuntu image), with some additional customization. 
+An image includes everything needed to run an application - the code or binary, runtimes, dependencies, and any other filesystem objects required. It is a file with a set of instruvtions on how to package up code or utilities and all dependencies - a read-only **template with instructions** for creating a Docker container. **When the Docker executes an image it becomes a container that is similat to a VM.** Often, an image is based on another image (like an Ubuntu image), with some additional customization. 
 
 To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. **Each instruction** in a Dockerfile creates **a layer** in the image. When you change the Dockerfile and **rebuild** the image, **only those layers which have changed** are rebuilt.
 
@@ -268,3 +268,4 @@ $ exit
 *sources:*
 1. [Docker overview](https://docs.docker.com/get-started/overview/)
 2. [Orientation and setup](https://docs.docker.com/get-started/)
+3. [GitLab CI: Pipelines, CI/CD and DevOps for Beginners](https://www.udemy.com/course/gitlab-ci-pipelines-ci-cd-and-devops-for-beginners/)

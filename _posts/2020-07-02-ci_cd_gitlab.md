@@ -38,7 +38,7 @@ There are automated processes involved in a CI/CD pipeline, meaning that there w
 ### GitLab CI/CD Architecture
 **GitLab CI/CD** is a part of GitLab, a web application with an API that stores its state in a database. It manages projects/builds and provides a user interface, besides all the features of GitLab. 
 
-**GitLab Runner** is an application which processes builds. It can be deployed separately and works with GitLab CI/CD through an API. 
+**GitLab Runner** is an application which processes builds. It can be deployed separately and works with GitLab CI/CD through an API.
 
 To perform the actual build, you need to install GitLab Runner which is written in Go. It has many features, including autoscaling, great Docker support, and the ability to run multiple jobs concurrently. 
 
@@ -133,9 +133,22 @@ Please enter path to SSH identity file (e.g. /home/user/.ssh/id_rsa):
 <my-ssh-file-path>
 ```
 You should now see the message:
-```bash
+```
 Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
 ```
+
+
+You can also use the following command that includes most of the above:
+
+```bash
+sudo gitlab-runner register -n \
+  --url https://gitlab.com/ \
+  --registration-token REGISTRATION_TOKEN \
+  --executor shell \
+  --description "My Runner"
+```
+
+
 
 Next, I enable the Runner for the project. You must have Owner permissions for the project and the specific Runner must not be [locked](https://docs.gitlab.com/ee/ci/runners/#prevent-a-specific-runner-from-being-enabled-for-other-projects). 
 
@@ -153,23 +166,29 @@ To prevent a specific Runner from being enabled for other projects you can lock 
 - Click **Save changes**
 
 
+To see the configured runners on your machine run:
+
+```bash
+sudo gitlab-runner list
+```
+
 ### How to write the `.gitlab-ci.yml` file
 
 #### Notes:
 
-1. The .gitlab-ci.yml file tells the GitLab Runner what to do. A simple pipeline commonly has three stages:
+1. Gitlab server will automatically deligate a (shared) GitLab Runner to download a **Docker container and image**, **execute the steps** of the process and makes sure it **saves** any `artifacts` (mentioned later) for the `jobs` to be completed, just by having a `.gitlab-ci.yml` file in the root difrectory of your project. After the process sucesses it deleted the image. If we register a runner to our project, it will run locally instead using docker.
+2. The .gitlab-ci.yml file tells the GitLab Runner what to do. A simple pipeline commonly has three stages:
 
 - build
 - test
 - deploy 
+3. The pipeline appears under the project’s **CI/CD > Pipelines** page. If everything runs OK (no non-zero return values), you get a green check mark associated with the commit. Many projects use GitLab’s CI service to run the test suite, so developers get immediate feedback if they broke something.
+4.  Because `.gitlab-ci.yml` is in the repository and is version controlled, old versions still build successfully, forks can easily make use of CI, branches can have different pipelines and jobs, and you have a single source of truth for CI. 
+5. On any push to your repository, GitLab will look for the `.gitlab-ci.yml` file and start jobs on Runners according to the contents of the file, for that commit. 
+6. `.gitlab-ci.yml` is a YAML file so you have to pay extra attention to indentation. Always use spaces, not tabs 
+7. The pipeline automatically runs everytime a commit happend (or a change is saved from the gitlab UI).
+8. We can specify to our runner which Docker image to use that contains all the packages that out code will need to build.
 
-2. The pipeline appears under the project’s **CI/CD > Pipelines** page. If everything runs OK (no non-zero return values), you get a green check mark associated with the commit. Many projects use GitLab’s CI service to run the test suite, so developers get immediate feedback if they broke something.
-
-3.  Because `.gitlab-ci.yml` is in the repository and is version controlled, old versions still build successfully, forks can easily make use of CI, branches can have different pipelines and jobs, and you have a single source of truth for CI. 
-
-4. On any push to your repository, GitLab will look for the `.gitlab-ci.yml` file and start jobs on Runners according to the contents of the file, for that commit. 
-
-5. `.gitlab-ci.yml` is a YAML file so you have to pay extra attention to indentation. Always use spaces, not tabs
 
 
 #### Elements of a `.gitlab-ci.yml` file
@@ -181,7 +200,25 @@ This is the simplest possible configuration:
 1. Define two jobs `test` and `run` (the names are arbitrary) with different commands to be executed
 2. Before every job, the commands defined by `before_script` are executed
 
-**Each job is run independently from each other.** If you want to check whether the .gitlab-ci.yml of your project is valid, there is a Lint tool under the page /-/ci/lint of your project namespace. You can also find a **CI Lint** button to go to this page under **CI/CD ➔ Pipelines** and **Pipelines ➔ Jobs** in your project. 
+If you want to check whether the .gitlab-ci.yml of your project is valid, there is a Lint tool under the page /-/ci/lint of your project namespace. You can also find a **CI Lint** button to go to this page under **CI/CD ➔ Pipelines** and **Pipelines ➔ Jobs** in your project. 
+
+
+##### stages:
+We define the jobs that we want our pipeline to perform. Usually is `build` and `test`.
+
+##### build:
+We define what the job `build` will do, by writing a `script` with commands underneeth it.
+
+##### test:
+We define what the job `test` will do, again, by writing a `script` with commands underneeth it. Usually, a `test` job tests if the build steps were completed successfully, but we need to define those testing steps. It can also run any tests we have in place in our code.
+
+##### artifacts
+Each job is run independently from each other. **Under `build`** we can define `artifacts` so the jobs can communicate with each other, otherwise any job performed during the `build` would be discarded before the test job. With the `artifact`, the jobs knows what to save, like files or folders created during the `build` stage. They defined by paths.
+
+
+##### debugging
+If the test job fails we can include debugging commands under the `test` stage that can print out results from the previous commands so we check what those outputs are at the logs in the gitlab UI for that particular test job.
+
 
 The following is the template `.gitlab-ci.yml` file for python:
 
@@ -241,6 +278,10 @@ pages:
 ```
 For more information and a complete `.gitlab-ci.yml` syntax, please read the [reference documentation](https://docs.gitlab.com/ee/ci/yaml/README.html) on `.gitlab-ci.yml`.
 
+
+Read more on how to get started with GitLab and Kubernetes [here](https://about.gitlab.com/blog/2020/07/06/beginner-guide-ci-cd/).
+
+
 *sources:*
 1. [Continuous integration and delivery](https://about.gitlab.com/ci-cd/)
 2. [GitLab Continuous Integration (CI) & Continuous Delivery (CD)](https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/)
@@ -249,3 +290,4 @@ For more information and a complete `.gitlab-ci.yml` syntax, please read the [re
 5. [Install GitLab Runner manually on GNU/Linux](https://docs.gitlab.com/runner/install/linux-manually.html)
 6. [Configuring GitLab Runners](https://docs.gitlab.com/ee/ci/runners/)
 7. [Getting started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
+8. [GitLab CI: Pipelines, CI/CD and DevOps for Beginners](https://www.udemy.com/course/gitlab-ci-pipelines-ci-cd-and-devops-for-beginners/)
