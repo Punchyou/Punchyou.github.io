@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Modeling and Machine Learning
+title: Data Science
 permalink: /blog/categories/dataScience
 ---
  
