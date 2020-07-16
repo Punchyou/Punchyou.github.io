@@ -74,11 +74,3 @@ build_image:
     - docker build -t my-docker-image .
     - docker run my-docker-image /script/to/run/tests
 ```
-
-Notes:
-
-1. GitLab logs:
-```bash
-/var/log/syslog
-```
-2. When register a runner, choose `docker` as the `executor`

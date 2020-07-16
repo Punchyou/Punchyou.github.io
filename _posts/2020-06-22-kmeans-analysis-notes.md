@@ -19,7 +19,7 @@ thumbnail:
     });
 </script>
 
-*I recenently did a k-means clustering analysis and along that way I explored different things someone should consider when using k-means, like how to choose **the best way of choosing** the number of clusters or add extra features beforehand in the k-means algorithm for better clustering. Here are my findings:*
+*I recenently did a k-means clustering analysis and along that way I explored different things someone should consider when using k-means, like how to choose **the best way to determine the number** of clusters or add extra features beforehand in the k-means algorithm for better clustering results. Here are my findings:*
 
 
 # Clustering
@@ -37,7 +37,7 @@ The k-means is an unsupervised learning algorithm that tries to partition the da
 
 ### How it works
 
-1. User needs to specify number of clusters K
+1. User needs to specify the number of clusters K
 2. The algorithm initializes centroids by first shuffling the dataset and then randomly selecting K data points for the centroids without replacement:
 -    Computes the sum of the squared distance between data points and all centroids
 -    Assigns each data point to the closest cluster (centroid)
@@ -45,12 +45,12 @@ The k-means is an unsupervised learning algorithm that tries to partition the da
 3. Keeps iterating until there is no change to the centroids. i.e assignment of data points to clusters isn’t changing.
 
 
-*The approach kmeans follows to solve the problem is called **Expectation-Maximization**.*
+The approach kmeans follows to solve the problem is called **Expectation-Maximization**.
 
 
 ### Implementation
 
-We will implement the kmeans algorithm on 2D dataset and see how it works. The data covers the waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA. We will try to find K subgroups within the data points and group them accordingly. Below is the description of the features:
+We will implement the kmeans algorithm on a 2D [dataset](https://gist.githubusercontent.com/curran/4b59d1046d9e66f2787780ad51a1cd87/raw/9ec906b78a98cf300947a37b56cfe70d01183200/data.tsv) and see how it works. The data covers the waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA. We will try to find K subgroups within the data points and group them accordingly. Below is the description of the features:
 
 - eruptions (`float`): Eruption time in minutes.
 - waiting (`int`): Waiting time to next eruption.
@@ -102,7 +102,7 @@ $$z = \frac{(x - u)}{s}$$
 where $u$ is the mean of the training samples (zero if `with_mean=False`) and $s$ is the standard deviation of the training samples (one if `with_std=False`).
 
 
-In our couse this will be:
+In our case this will be:
 
 ```python
 # Standardize the data
@@ -188,7 +188,7 @@ plt.tight_layout()
 ### Implementation of k-means for image compression
 
 
-For this compression I'm using a 429x740x3 image. For each one of the 740x429 pixels location we would have 3 8-bit integers that specify the red, green, and blue intensity values (abbreviation of RGB). Our goal is to reduce the number of colors to 30 and represent (compress) the photo using those 30 colors only. To pick which colors to use, we’ll use kmeans algorithm on the image and treat every pixel as a data point. Doing so will allow us to represent the image using the 30 centroids for each pixel and would significantly reduce the size of the image by a factor of 6.
+For this compression I'm using a 429x740x3 image. For each one of the 429x740 pixels location we would have 3 8-bit integers that specify the red, green, and blue intensity values (abbreviation of RGB). Our goal is to reduce the number of colors to 30 and represent (compress) the photo using those 30 colors only. To pick which colors to use, we’ll use kmeans algorithm on the image and treat every pixel as a data point. Doing so will allow us to represent the image using the 30 centroids for each pixel and would significantly reduce the size of the image by a factor of 6.
 
 The code is the following:
 
@@ -228,13 +228,12 @@ plt.tight_layout()
 
 The compressed image looks close to the original one which means we’re able to retain the majority of the characteristics of the original image. This image compression method is called **lossy data compression** because we can’t reconstruct the original image from the compressed image.
 
-When using k-means, we need to determine how many clusters we need to have beforehand and apparently there are a few methods on how to do that.
-
 ## Evaluation
+When using k-means, we need to determine how many clusters we need to have beforehand and then feed that number into the algorithm. A few ways that help us find the best cluster number are following:
 
 
 ### 1. The Elbow method
-This method gives us an idea on what a good k number of clusters would be based on the sum of squared distance (SSE) between data points and their assigned clusters’ centroids. We pick k at the spot where SSE starts to flatten out and forming an elbow. We’ll use the geyser dataset  we first used and evaluate SSE for different values of k and see where the curve might form an elbow and flatten out. The code is the following:
+This method gives us an idea on what a good k number of clusters would be based on the **sum of squared distance (SSE)** between data points and their assigned clusters’ centroids. We pick k at the spot where SSE starts to flatten out and forming an elbow. We’ll use the geyser dataset  we first used and evaluate SSE for different values of k and see where the curve might form an elbow and flatten out. The code is the following:
 
 ```python
 # Run the Kmeans algorithm and get the index of data points clusters
@@ -262,12 +261,12 @@ The graph above shows that k=2 is the bect choice.
 
 ### 2.  The Silhouette Analysis
 
-The SA is a way to measure how close each point in a cluster is to the points in its neighboring clusters. It can be used to determine the degree of separation between clusters. Values lie in the range of [-1, 1]. A value of +1 indicates that the sample is far away from its neighboring cluster and very close to the cluster its assigned. Similarly, value of -1 indicates that the point is close to its neighboring cluster than to the cluster its assigned. A value of 0 means its at the boundary of the distance between the two cluster. 
+The SA is a way to measure how close each point in a cluster is to the points in its neighboring clusters. It can be used to determine the **degree of separation** between clusters. Values lie in the range of [-1, 1]. A value of +1 indicates that the sample is far away from its neighboring cluster and very close to the cluster its assigned. Similarly, value of -1 indicates that the point is close to its neighboring cluster than to the cluster its assigned. A value of 0 means its at the boundary of the distance between the two cluster. 
 
 #### Definition:
-For an example $(i)$ in the data, lets define $a(i)$ to be the mean distance of point $(i)$ w.r.t to all the other points in the cluster its assigned $(A)$. We can interpret $a(i)$ as how well the point is assigned to the cluster. Smaller the value better the assignment.
+For an example $(i)$ in the data, lets define $a(i)$ to be the mean distance of point $(i)$ with regards to all the other points in the cluster its assigned $(A)$. We can interpret $a(i)$ as how well the point is assigned to the cluster. Smaller the value better the assignment.
 
-Now, let $b(i)$ is the mean distance of point $(i)$ w.r.t. to other points to its closet neighboring cluster $(B)$. The cluster $(B)$ is the cluster to which point $(i)$ is not assigned to but its distance is closest amongst all other cluster.
+Now, let $b(i)$ is the mean distance of point $(i)$ with regards to other points to its closer neighboring cluster $(B)$. The cluster $(B)$ is the cluster to which point $(i)$ is not assigned to but its distance is closest amongst all other cluster.
 
 The silhouette coefficient $s(i)$ can be calculated:
 
@@ -363,14 +362,21 @@ for i, k in enumerate([2, 3, 4]):
 <img src="/assets/img/posts/k-means/silhouette3.png" alt="silhouette" width="700" height="300">
 </div>
 
-As the above plots show, `n_clusters=2` has the best average silhouette score of around 0.75 and all clusters being above the average shows that it is actually a good choice. Also, the thickness of the silhouette plot gives an indication of how big each cluster is. The plot shows that cluster 1 has almost double the samples than cluster 2. However, as we increased `n_clusters` to 3 and 4, the average silhouette score decreased dramatically to around 0.48 and 0.39 respectively. Moreover, the thickness of silhouette plot started showing wide fluctuations. The bottom line is: Good `n_clusters` will have a well above 0.5 silhouette average score as well as all of the clusters have higher than the average score.
+As the above plots shows, `n_clusters=2` has the best average silhouette score of around 0.75 and all clusters being above the average shows that it is actually a good choice. Also, the thickness of the silhouette plot gives an indication of how big each cluster is. The plot shows that cluster 1 has almost double the samples than cluster 2. However, as we increased `n_clusters` to 3 and 4, the average silhouette score decreased dramatically to around 0.48 and 0.39 respectively. Moreover, the thickness of silhouette plot started showing wide fluctuations. The bottom line is: Good `n_clusters` will have a well above 0.5 silhouette average score as well as all of the clusters have higher than the average score.
+
+#### Some notes on the Sihlouette Analysis:
+
+1. The mean $S$ value should be as close to 1 as possible
+2. The plot of each cluster should be above the mean $S$ value as much as possible. Any plot region below the mean value is not desirable
+3. The width of the plot should be as uniform as possible
 
 
-## Additional Implementations
+
+## Additional Implementation of K-means
 
 ### K-means With Multiple Features
 
-How about clustering based on more than one feature? The k-means clustering happens in n-dimensional space where $n$ is number of features. The number of dimensions in the vector of each sample would change and there is no need to change algorithm or approach.
+How about clustering based on more than one feature? The k-means clustering happens in n-dimensional space where $n$ is the number of features. The number of dimensions in the vector of each sample would change and there is no need to change algorithm or approach.
 
 The code looks pretty much like the implementation mentioned above, except that the input of the algorithm can now be a dataframe with two or more columns in it. See an example snipet below:
 
@@ -390,18 +396,10 @@ df['Cluster'] = y
 print(df.head())
 ```
 
-
-#### Conclusions for the Sihlouette Analysis:
-
-1. The mean $S$ value should be as close to 1 as possible
-2. The plot of each cluster should be above the mean $S$ value as much as possible. Any plot region below the mean value is not desirable
-3. The width of the plot should be as uniform as possible
+You might also want to apply PCA or any other dimentionality reduction method after the clustering for a better visualization of the multiple features.
 
 
-
-
-
-    *sources:*
-    1. [Using Silhouette analysis for selecting the number of cluster for K-means clustering (Part 2)](https://kapilddatascience.wordpress.com/2015/11/10/using-silhouette-analysis-for-selecting-the-number-of-cluster-for-k-means-clustering/) by [kapildalwani](https://kapilddatascience.wordpress.com/author/kapildalwani/)
-    2. [K-means Clustering: Algorithm, Applications, Evaluation Methods, and Drawbacks](https://towardsdatascience.com/k-means-clustering-algorithm-applications-evaluation-methods-and-drawbacks-aa03e644b48a) by [Imad Dabbura](https://towardsdatascience.com/@ImadPhd)
-    3. [How to use k-means clustering for more features](https://stackoverflow.com/questions/54861453/how-to-use-k-means-clustering-for-more-features/54864391)
+*sources:*
+ 1. [Using Silhouette analysis for selecting the number of cluster for K-means clustering (Part 2)](https://kapilddatascience.wordpress.com/2015/11/10/using-silhouette-analysis-for-selecting-the-number-of-cluster-for-k-means-clustering/) by [kapildalwani](https://kapilddatascience.wordpress.com/author/kapildalwani/)
+ 2. [K-means Clustering: Algorithm, Applications, Evaluation Methods, and Drawbacks](https://towardsdatascience.com/k-means-clustering-algorithm-applications-evaluation-methods-and-drawbacks-aa03e644b48a) by [Imad Dabbura](https://towardsdatascience.com/@ImadPhd)
+ 3. [How to use k-means clustering for more features](https://stackoverflow.com/questions/54861453/how-to-use-k-means-clustering-for-more-features/54864391)

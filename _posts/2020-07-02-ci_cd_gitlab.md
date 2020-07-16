@@ -276,6 +276,15 @@ pages:
   only:
   - master
 ```
+
+Notes:
+
+1. To see the GitLab logs on your marchine:
+```bash
+/var/log/syslog
+```
+2. If you want tthe runner to run everything inside a docker container, then When register a runner choose `docker` as the `executor`
+
 For more information and a complete `.gitlab-ci.yml` syntax, please read the [reference documentation](https://docs.gitlab.com/ee/ci/yaml/README.html) on `.gitlab-ci.yml`.
 
 
