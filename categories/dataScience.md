@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Modeling and Machine Learning
-permalink: /blog/categories/modeling
+permalink: /blog/categories/dataScience
 ---
  
 <h5> Posts by Category : {{ page.title }} </h5>
