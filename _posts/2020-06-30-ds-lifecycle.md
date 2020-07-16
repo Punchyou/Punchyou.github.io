@@ -3,7 +3,7 @@ layout: post
 title: Data Science Lifecycle
 author: Maria Pantsiou
 date: '2020-06-30 14:35:23 +0530'
-category: guides
+category: dataScience
 summary: Data Science Lifecycle
 thumbnail:
 

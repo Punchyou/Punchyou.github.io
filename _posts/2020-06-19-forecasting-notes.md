@@ -3,7 +3,7 @@ layout: post
 title: Forecasting Notes
 author: Maria Pantsiou
 date: '2020-06-19 14:35:23 +0530'
-category: modeling
+category: dataScience
 summary: Forecasting Notes
 thumbnail:
 ---

@@ -3,7 +3,7 @@ layout: post
 title: k-means Clustering
 author: Maria Pantsiou
 date: '2020-06-22 14:35:23 +0530'
-category: modeling
+category: dataScience
 summary: k-means Clustering
 thumbnail:
 
