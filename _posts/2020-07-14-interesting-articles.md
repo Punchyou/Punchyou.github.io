@@ -25,6 +25,8 @@ thumbnail:
 8. [Data Science Life Cycle 101 for Dummies like Me](https://towardsdatascience.com/data-science-life-cycle-101-for-dummies-like-me-e66b47ad8d8f#:~:text=I%27ll%20give%20a%20brief,be%20useful%20in%20my%20experience.) by [Sangeet Moy Das](https://towardsdatascience.com/@sangeet.das)
 9.  [Structured-Case: A Methodological Framework for Building Theory in Information Systems Research](https://www.researchgate.net/publication/221407650_Structured-Case_A_Methodological_Framework_for_Building_Theory_in_Information_Systems_Research) by [Paul Anthony Swatman](https://www.researchgate.net/profile/Paul_Swatman)
 10. [What data scientists need to know about DevOps](https://towardsdatascience.com/what-data-scientists-need-to-know-about-devops-2f8bc6660284)
+11. [The 5 Feature Selection Algorithms every Data Scientist should know](https://towardsdatascience.com/the-5-feature-selection-algorithms-every-data-scientist-need-to-know-3a6b566efd2)
+
 
 ### Software Engineering
 1. [Software Design Principles](https://medium.com/@amarthkr66/software-design-principles-6d2813e12096)
@@ -42,12 +44,12 @@ thumbnail:
 11. [GitLab CI: Pipelines, CI/CD and DevOps for Beginners](https://www.udemy.com/course/gitlab-ci-pipelines-ci-cd-and-devops-for-beginners/)
 
 ## Books
-### Forecating
+### Forecasting
 1. [Forecasting: Principles and Practice](https://otexts.com/fpp2/) book by Rob J Hyndman and George Athanasopoulos
 2. [Introduction to Machine Leaning with Python](https://www.oreilly.com/library/view/introduction-to-machine/9781449369880/) by Andreas C. Müller, Sarah Guido
 
 ## Online Courses
-### Sofware Engineering
+### Software Engineering
 1. [GitLab CI: Pipelines, CI/CD and DevOps for Beginners](https://www.udemy.com/course/gitlab-ci-pipelines-ci-cd-and-devops-for-beginners/)
 
 ## Videos

@@ -5,7 +5,7 @@ author: Maria Pantsiou
 date: '2020-06-22 14:35:23 +0530'
 category: dataScience
 summary: k-means Clustering
-thumbnail:
+thumbnail: triangles_background.png
 
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>

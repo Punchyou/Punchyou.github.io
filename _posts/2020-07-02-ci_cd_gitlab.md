@@ -5,7 +5,7 @@ author: Maria Pantsiou
 date: '2020-07-02 14:35:23 +0530'
 category: devops
 summary: CI/CD on Gitlab
-thumbnail:
+thumbnail: synthwave_background.png
 
 ---
 
