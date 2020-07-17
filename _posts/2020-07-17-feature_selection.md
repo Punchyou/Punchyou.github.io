@@ -2,7 +2,7 @@
 layout: post
 title: Feature Selection (In Progress)
 author: Maria Pantsiou
-date: '2020-07-02 14:35:23 +0530'
+date: '2020-07-17 14:35:23 +0530'
 category: dataScience
 summary: Feature Selection (In Progress)
 thumbnail:
