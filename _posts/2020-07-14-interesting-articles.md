@@ -26,6 +26,12 @@ thumbnail:
 9.  [Structured-Case: A Methodological Framework for Building Theory in Information Systems Research](https://www.researchgate.net/publication/221407650_Structured-Case_A_Methodological_Framework_for_Building_Theory_in_Information_Systems_Research) by [Paul Anthony Swatman](https://www.researchgate.net/profile/Paul_Swatman)
 10. [What data scientists need to know about DevOps](https://towardsdatascience.com/what-data-scientists-need-to-know-about-devops-2f8bc6660284)
 11. [The 5 Feature Selection Algorithms every Data Scientist should know](https://towardsdatascience.com/the-5-feature-selection-algorithms-every-data-scientist-need-to-know-3a6b566efd2)
+12. [5 Regression Loss Functions All Machine Learners Should Know](https://heartbeat.fritz.ai/5-regression-loss-functions-all-machine-learners-should-know-4fb140e9d4b0)
+13. [Deploy a Machine Learning Model as a Web Application (Part 1)](https://heartbeat.fritz.ai/deploy-a-machine-learning-model-as-a-web-application-part-1-a1c1ff624f7a)
+14. [About Train, Validation and Test Sets in Machine Learning](https://towardsdatascience.com/train-validation-and-test-sets-72cb40cba9e7)
+15. [A Simple Introduction to K-Nearest Neighbors Algorithm](https://towardsdatascience.com/a-simple-introduction-to-k-nearest-neighbors-algorithm-b3519ed98e)
+16. [Cost-Sensitive Decision Trees for Imbalanced Classification](https://machinelearningmastery.com/cost-sensitive-decision-trees-for-imbalanced-classification/)
+17. [A Guide to Decision Trees for Machine Learning and Data Science](https://towardsdatascience.com/a-guide-to-decision-trees-for-machine-learning-and-data-science-fe2607241956)
 
 
 ### Software Engineering
