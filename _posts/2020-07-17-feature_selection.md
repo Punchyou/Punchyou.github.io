@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Feature Selection (In Progress)
+title: Feature Selection
 author: Maria Pantsiou
 date: '2020-07-17 14:35:23 +0530'
 category: dataScience
-summary: Feature Selection (In Progress)
+summary: Feature Selection
 thumbnail: ico_sphere_bg.png
 
 ---
