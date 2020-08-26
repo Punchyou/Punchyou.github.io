@@ -29,10 +29,12 @@ thumbnail: ico_sphere_bg.png
 3. **Garbage In Garbage out**: Poor-quality input will produce Poor-Quality output
 
 
-Three categories of feature selection process:
-1. **Filter Based**: An example of such a metric could be correlation/chi-square
-2. **Wrapper-based**: Wrapper methods consider the selection of a set of features as a search problem. Example: *Recursive Feature Elimination*
+Four categories of feature selection process:
+1. **Filter Based**: An example of such a metric could be correlation with the ouput (Gram-Schmidt, mutual information), PCA or chi-square
+2. **Wrapper-based**: Wrapper methods consider the selection of a set of features as a search problem. Example: *Recursive Feature Elimination*. Disadvandages are the overfitting risk and computation time.
 3. **Embedded**: Embedded methods use algorithms that have built-in feature selection methods. For instance, *Lasso* and *RF* have their own feature selection methods.
+4. **Hybrid**: Combine filter (for dimentionality reduction) and wrappers (to find the best subset).
+
 
 ## Implementation
 The problem that we want to solve is to find the best features that can tell us if a football player is "great" or not, based on dataset of existing football players. Our training dataset consists of a column that contains names of famous football players to date, columns with different information about those players and an *Overall* column (range 46 - 94) based on which we will decide where a player is "great" or not. In our case, if the *Overall* score is more than 87, then we consider the player "great".
@@ -275,6 +277,37 @@ def create_feature_selection_df(feature_name, pearson_cor_support, chi_squared_s
 
 Now we have all the results in a dataframe and we check if we get a feature based on all the methods. On top of this implementation we could create an evaluation function that finds the best feature selection algorithm for a specific dataset. In the next update of this article I plan to another algorithm that does that.
 
+## Evaluating the Feature Selection Methods
+Since some prediction models work better with specific feature selection methods we need to carefully select the feature selection method to best fit our model. We also need to measure the efficiency of the feature selection.
+
+Approach: For all the methods available, we can calculate the **mean squared log error** of the prediction and create a table of feature selection method against prediction methods errors. We can use the following ways of intepreting the results:
+
+1. Minimum mean squared log error value
+2. Ranking the feature selection method with the highest score in the column
+3. Ranking the average of feature selection methods scores.
+4. Δ between the mean squared log error and the minimum mean squared log error of the models. Further investigation on this uncovers models with relatively bad results tend to skew the selection process towards the algorithms that performed best for them. To counter this affect we can adjust the weight of the models according to their distance from the absolute minimum:
+
+The distance:
+
+$(1-\frac{PM_{min}}{PM})*(\frac{Absolute Min}{FSM_{min}})$
+
+$FSM_{min}$: The minimum mean squared log error of the FSM
+
+$Absolute Min$: The minimum mean squared log error at the table FSM/PM
+
+$PM_{min}$: The minimum mean squared log error of the prediction method
+
+$PM$: The minimum mean squared log error
+
+The final results might be the same, But FSMs with higher $FSM_{min}$ have less influence (weight) on the average and there for, on the FSM selected. This way we give a chance to all of the FSMs but not in away that can bias the results by large 𝛥 from the Minimum.
+
+The algorithm:
+1. Calculate the mean squared log error (msle) for all feature selection methods with all prediction models.
+2. For each Prediction model select the FSM/PM with the minimum msle
+3. Calculate the distance (adjusting the weight of the PMs according to their distance from the absolute minimum)
+4. Calculate the average for each FSM
+5. Select the FSM with the minimum average and set the FSM as the selected best FSM
+    
 sources:
 1. [The 5 Feature Selection Algorithms every Data Scientist should know](https://towardsdatascience.com/the-5-feature-selection-algorithms-every-data-scientist-need-to-know-3a6b566efd2)
 2. [Feature Selection Using Football Data](https://www.kaggle.com/mlwhiz/feature-selection-using-football-data)
@@ -283,3 +316,4 @@ sources:
 4. [Chi-Square Tests: Crash Course Statistics #29](https://www.youtube.com/watch?v=7_cs1YlZoug)
 5. [Why LASSO for feature selection?](https://stats.stackexchange.com/questions/367155/why-lasso-for-feature-selection)
 6. [Welcome to LightGBM’s documentation!](https://lightgbm.readthedocs.io/en/latest/)
+7. [Feature selection evaluation for automated AI](https://towardsdatascience.com/feature-selection-evaluation-for-automated-ai-e67f488098d8)
