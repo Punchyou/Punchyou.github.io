@@ -199,9 +199,9 @@ Correlation coefficients to measure the strength of the relationship between two
 
 Takes values between −1 and 1 with negative values indicating a negative relationship and positive values indicating a positive relationship. The correlation coefficient only measures the strength of the linear relationship.
 
-Autocorrelation 
+### Autocorrelation 
 
-measures the linear relationship between lagged values of a time series. re several autocorrelation coefficients: r1 measures the relationship between yt and yt−1, r2 measures the relationship between yt and yt−2, and so on. The value of rk can be written as:
+Measures the linear relationship between lagged values of a time series. re several autocorrelation coefficients: $r1$ measures the relationship between $y_t$ and $y_{t−1}$, $r2$ measures the relationship between $y_t$ and $y_{t−2}$, and so on. The value of $r_k$ can be written as:
 
   $r=\frac{\sum_{t=k+1}^{T}(y_t-\overline{y})(y_{t-k}-\overline{y})}{\sum{t=k+1}^{T}(x_t-\overline{x})^2}$
 
@@ -209,7 +209,7 @@ measures the linear relationship between lagged values of a time series. re seve
 
 T is the length of the time series 
 
-he autocorrelation coefficients are plotted to show the autocorrelation function or ACF. The plot is also known as a correlogram. Look at the book for more. 
+The autocorrelation coefficients are plotted to show the autocorrelation function or ACF. The plot is also known as a correlogram. Look at the book for more. 
 
  
 
