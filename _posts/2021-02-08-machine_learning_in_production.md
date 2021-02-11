@@ -5,7 +5,7 @@ author: Maria Pantsiou
 date: '2021-02-08 14:35:23 +0530'
 category: AI
 summary: Machine Learning in Production
-thumbnail: light_circles2.png	
+thumbnail: light_circles2.png
 
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
@@ -82,7 +82,7 @@ The model and the application can each be run in a container computing environme
 A container can be thought of as a standardized collection/bundle of software that is to be used for the specific purpose of running an application. 
 
 Three continer running three different applications:
-![container](images/container.png)
+![container](../assets/img/container.png)
 
 Example of a [dockerfile](https://github.com/pytorch/pytorch/blob/master/docker/pytorch/Dockerfile), a file of instructions about how a container ccan be created.
 
