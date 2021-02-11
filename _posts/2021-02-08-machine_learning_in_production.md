@@ -1,3 +1,24 @@
+---
+layout: post
+title: Machine Learning in Production
+author: Maria Pantsiou
+date: '2021-02-08 14:35:23 +0530'
+category: AI
+summary: Machine Learning in Production
+thumbnail: light_circles2.png	
+
+---
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            displayMath: [['$$','$$']],
+            inlineMath: [['$','$']],
+        },
+    });
+</script>
+
 # Machine Learning in Production
 
 
