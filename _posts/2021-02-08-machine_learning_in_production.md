@@ -259,19 +259,109 @@ Once the compute instance has finished fitting the model, the resulting model ar
 
 You can check the jobs in the AWS console: Underneath the Notebook Instances in AWS Sagemaker, click om Training Jobs. Click on a training job, will reaveal information about the job.There, theres is also a `View logs` option.
 
+## Deploy a model with SageMaker
+Instead of testing the model with the transform method, we will deploy our model and then send the test data to the endpoint.
+Deployment means creating an endpoint, which is just a URL that we can send data to.
+The only thing we need to do to deploy it in an application, is to just call `deploy` in our existing model (after training):
+```py
+# we need to pass the number of VMs we want to use, and the type of the VM
+xgb_preedictor = xgb.deployt(initial_instance_count=1, instance_type='ml.m4.xlarge')
+```
+SageMaker has now created a VM that has ran the trained model, that it now accessed by an endpoint (URL).
+
+In order to send data to the model's endpoint, we can use the `predict` method of the xgd_predictor object that returned above. The data the we provide to the predictor object need to serialized first. We can do that with the sagemaker's `csv_serializer`. the returned results is also serialized (a string), so we'll need to convert it back to numpy.array:
+
+```py
+# We need to tell the endpoint what format the data we are sending is in
+xgb_predictor.content_type = 'text/csv'
+xgb_predictor.serializer = csv_serializer
+
+Y_pred = xgb_predictor.predict(X_test.values).decode('utf-8')
+# predictions is currently a comma delimited string and so we would like to break it up
+# as a numpy array.
+Y_pred = np.fromstring(Y_pred, sep=',')
+```
+
+Lastly we need to shut down the deployed model, as it  will run, waiting for data to be send to it:
+
+```py
+xgb_predictor.delete_endpoint()
+```
+
+To do the above in mode detail (configure the endpoint), go to the low-level deployment tutorial of the course.
+Endpoit configuration objects are also available in **SageMaker menu** &rarr; **Endpoint configurations**. After its creation, we can use the same configuration as many times as we want.
+
+Once the endpoint is created, we can see it Under **SageMaker menu** &rarr; **Endpoints**, where we can see the URL, or delete our endpoint. Then we can test the model (send the data to endpoint)
+Notes
+- SageMaker gets the data to the endpoint, and if we want it to, split the data amongst different models.
+# Hyperparameters Tuning
+
+- SageMaker can run a bunch of models and choose the best one. We have to define how many models to runand the best model method (like rmse).
+- To check the output of the model, check **Cloud Watch**. (logs I mentioned earlier)
+
+Wee need a model as we have done so far, and we set the hyper parameters like before. This will be our basline model:
+
+```py
+# set a baseline object
+xgb.set_hyper_parameters(max_depth=5,
+                        eta=0.2,
+                        gamma=4,
+                        min_child_weight=6,
+                        subsample=0.8,
+                        objective='reg:linear',
+                        early_stopping_rounds=10,
+			num_round=200)
+```
+
+Then we create another object that will tune the parameters above and we fit the tuner:
+
+```py
+xgb_hyperparameter_tuner = HyperparameterTuner(estimator = xgb, # The estimator object to use as the basis for the training jobs.
+                                               objective_metric_name = 'validation:rmse', # The metric used to compare trained models.
+                                               objective_type = 'Minimize', # Whether we wish to minimize or maximize the metric.
+                                               max_jobs = 20, # The total number of models to train
+                                               max_parallel_jobs = 3, # The number of models to train in parallel
+                                               hyperparameter_ranges = {
+                                                    'max_depth': IntegerParameter(3, 12),
+                                                    'eta'      : ContinuousParameter(0.05, 0.5),
+                                                    'min_child_weight': IntegerParameter(2, 8),
+                                                    'subsample': ContinuousParameter(0.5, 0.9),
+                                                    'gamma': ContinuousParameter(0, 10),
+                                               })
+# load data tp s3
+s3_input_train = sagemaker.s3_input(s3_data=train_location, content_type='csv')
+s3_input_validation = sagemaker.s3_input(s3_data=val_location, content_type='csv')
+# fit the tuner
+xgb_hyperparameter_tuner.fit({'train': s3_input_train, 'validation': s3_input_validation})
+```
+ To check the nest model:
+```py
+xgb_hyperparameter_tuner.best_training_job()
+```
+
+At the moment we have trained the tuner, but not the initial estimator. In order to do that, we can attach the tuner to the estimator. We can choose the best training model:
+```py
+xgb_attached = sagemaker.estimator.Estimator.attach(xgb_hyperparameter_tuner.best_training_job())
+```
+
+Then we can test our best model.
+
+If we want to use the API, we can do it by defining more details option for the container and the model, the only difference will be that instead of setting up the parameters of the baseline mode, we will only refer to the ones that will remain static, and later one we can define the ranges for the parameters that will vary.
 
 
+## Deploy a Sentiment Analysis Model
+### Bag of words
+In the project, we'll use the bag-of-words approach to determinte if a movie feedback is positive or negative.
 
+- Turn each document (or a sentense) into a vector of numbers:
+![bag of words vector](../assets/img/bag_of_words.png)
+We can compare two documents based on how many words they have in common. The mathematical repressentation is:
 
+$$a\cdotb = \Sigma(a_0 b_0i + a_1 b_1 + ... + a_n b_n) = 1$$
 
+The greater the product, the mode similar the documents. The issue is that different pairs my end up having the same product. In that case, we the *cosine similarity*:
 
-
-
-
-
-
-
-
+$$cos(θ) = \frac{a\cdot b}{|a|\cdot|b|}$$
 
 
 
