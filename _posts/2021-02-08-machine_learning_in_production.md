@@ -385,7 +385,7 @@ Issues you need to overcome:
 To overcoms those issues si an overkill for a simple application, so we'll create a new endpoints ourselves.
 
 Structure of the web app:
-![web app](../assets/img/web_app_structure.png)
+![web app](web_app_structure.png)
 
 ## Set up the App
 Instead of creating a server, we can tell AWS to only run a function and get charged only for when the fucntion runs. After creating an endpoint method (IMDB Sentiment Analysis - XGBoost - WebApp tutorial notebook), we invoke the endpoint, then serialize and send the data to it. First, we prepare the data:
