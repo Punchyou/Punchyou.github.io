@@ -262,10 +262,10 @@ You can check the jobs in the AWS console: Underneath the Notebook Instances in 
 ## Deploy a model with SageMaker
 Instead of testing the model with the transform method, we will deploy our model and then send the test data to the endpoint.
 Deployment means creating an endpoint, which is just a URL that we can send data to.
-The only thing we need to do to deploy it in an application, is to just call `deploy` in our existing model (after training):
+The only thing we need to do to deploy it in an application, is to just call `deploy()` in our existing model (after training). This will start the endpoint and the **charging** will start:
 ```py
 # we need to pass the number of VMs we want to use, and the type of the VM
-xgb_preedictor = xgb.deployt(initial_instance_count=1, instance_type='ml.m4.xlarge')
+xgb_preedictor = xgb.deploy(initial_instance_count=1, instance_type='ml.m4.xlarge')
 ```
 SageMaker has now created a VM that has ran the trained model, that it now accessed by an endpoint (URL).
 
@@ -282,7 +282,7 @@ Y_pred = xgb_predictor.predict(X_test.values).decode('utf-8')
 Y_pred = np.fromstring(Y_pred, sep=',')
 ```
 
-Lastly we need to shut down the deployed model, as it  will run, waiting for data to be send to it:
+Lastly **we need to shut down the deployed model**, as it  will run, waiting for data to be send to it:
 
 ```py
 xgb_predictor.delete_endpoint()
@@ -380,4 +380,160 @@ $$cos(θ) = \frac{a\cdot b}{|a|\cdot|b|}$$
 
 Issues you need to overcome:
 - The endpoind takes encoded data as input, but the user input on the web app is a string.
-- Security - endpoints provided by sagemaker have limited access.
+- Security - endpoints provided by sagemaker give access only to users authenticated with AWS credentials.
+
+To overcoms those issues si an overkill for a simple application, so we'll create a new endpoints ourselves.
+
+Structure of the web app:
+![web app](../assets/img/web_app_structure.png)
+
+## Set up the App
+Instead of creating a server, we can tell AWS to only run a function and get charged only for when the fucntion runs. After creating an endpoint method (IMDB Sentiment Analysis - XGBoost - WebApp tutorial notebook), we invoke the endpoint, then serialize and send the data to it. First, we prepare the data:
+
+```py
+import re
+
+test_review = "Nothing but a disgusting materialistic pageant of glistening abed remote control greed zombies
+
+REPLACE_NO_SPACE = re.compile("(\.)|(\;)|(\:)|(\!)|(\')|(\?)|(\,)|(\")|(\()|(\))|(\[)|(\])")
+REPLACE_WITH_SPACE = re.compile("(<br\s*/><br\s*/>)|(\-)|(\/)")
+
+def review_to_words(review):
+    words = REPLACE_NO_SPACE.sub("", review.lower())
+    words = REPLACE_WITH_SPACE.sub(" ", words)
+    return words
+
+test_words = review_to_words(test_review)
+
+# create a bag of words embedding of the test_words
+# words is the string cleaned from html symbols
+# vocabulary is the most fewquently appearing words in a document
+def bow_encoding(words, vocabulary):
+    bow = [0] * len(vocabulary) # Start by setting the count for each word in the vocabulary to zero.
+    for word in words.split():  # For each word in the string
+        if word in vocabulary:  # If the word is one that occurs in the vocabulary, increase its count.
+            bow[vocabulary[word]] += 1
+    return bow
+test_bow = bow_encoding(test_words, vocabulary)
+```
+
+To invoke the endpoint, we need to have th data converted to csv format, as this is what that function expects:
+```py
+body = ','.join([str(val) for val in test_bow]).encode('utf-8'))
+response = runtime.invoke_endpoint(EndpointName = xgb_predictor.endpoint, # The name of the endpoint we created
+                                       ContentType = 'text/csv',                     # The data format that is expected
+                                       Body = body)
+```
+we are most interested in is 'Body' object:
+
+```py
+response = response['Body'].read().decode('utf-8')
+```
+Make sure you **shut down the endpoint**:
+```py
+xgb_predictor.delete_endpoint()
+```
+### Set up the Lamba fuctnion: a function as a service
+We need to give the lamba function permissio to use a SageMaker endpoint.
+
+* First we'll set up a new role for Lamba func:
+
+Amazon Console &rarr; Secutiry, Identity and Compiance &rarr; IAM &rarr; Roles &rarr; Create Role &rarr; Lamba &rarr; Next &rarr; Check AmazonSageMalerFullAccess &rarr; Next &rarr; Create a LambaSageMakerRole.
+
+* Then we'll create a function:
+Amazon Conseol &rarr; Compute &rarr; Lamba &rarr; Create a function &rarr; Author from scratch &rarr; Name: sentiment_lamba_function &rarr; Runtime: Python 3.6 &rarr; Role: Choose an existing role, LambaSageMaKerRole &rarr; Create
+
+Scroll down to see the funtion (emty for now). We can copy and paste the function from the notebook:
+```py
+# We need to use the low-level library to interact with SageMaker since the SageMaker API
+# is not available natively through Lambda.
+import boto3
+
+# And we need the regular expression library to do some of the data processing
+import re
+
+REPLACE_NO_SPACE = re.compile("(\.)|(\;)|(\:)|(\!)|(\')|(\?)|(\,)|(\")|(\()|(\))|(\[)|(\])")
+REPLACE_WITH_SPACE = re.compile("(<br\s*/><br\s*/>)|(\-)|(\/)")
+
+def review_to_words(review):
+    words = REPLACE_NO_SPACE.sub("", review.lower())
+    words = REPLACE_WITH_SPACE.sub(" ", words)
+    return words
+
+def bow_encoding(words, vocabulary):
+    bow = [0] * len(vocabulary) # Start by setting the count for each word in the vocabulary to zero.
+    for word in words.split():  # For each word in the string
+        if word in vocabulary:  # If the word is one that occurs in the vocabulary, increase its count.
+            bow[vocabulary[word]] += 1
+    return bow
+
+
+def lambda_handler(event, context):
+
+    vocab = "*** ACTUAL VOCABULARY GOES HERE ***"
+
+    words = review_to_words(event['body'])
+    bow = bow_encoding(words, vocab)
+
+    # The SageMaker runtime is what allows us to invoke the endpoint that we've created.
+    runtime = boto3.Session().client('sagemaker-runtime')
+
+    # Now we use the SageMaker runtime to invoke our endpoint, sending the review we were given
+    response = runtime.invoke_endpoint(EndpointName = '***ENDPOINT NAME HERE***',# The name of the endpoint we created
+                                       ContentType = 'text/csv',                 # The data format that is expected
+                                       Body = ','.join([str(val) for val in bow]).encode('utf-8')) # The actual review
+
+    # The response is an HTTP response whose body contains the result of our inference
+    result = response['Body'].read().decode('utf-8')
+
+    # Round the result so that our web app only gets '1' or '0' as a response.
+    result = round(float(result))
+
+    return {
+        'statusCode' : 200,
+        'headers' : { 'Content-Type' : 'text/plain', 'Access-Control-Allow-Origin' : '*' },
+        'body' : str(result)
+    }
+```
+We had defined the vocabulary here (in the notebook):
+```py
+train_X, test_X, vocabulary = extract_BoW_features(train_X, test_X)
+```
+We'll need to replace the `***ENDPOINT NAME HERE***` with the results of `xgb_preedictor.endpoint` and the `*** ACTUAL VOCABULARY GOES HERE *** with `vocabulary`. Click on Save.
+
+
+Create a test event to test it: Dropdown menu &rarr; Configure test events &rarr; Create new test event &rarr; Event template: API Gateaway AWS Proxy &rarr; Event name: testEvent
+
+Here we can replace `{"body": "test.csv"` with `{"body": "This movie is horrible."`. Then clikc on test. In order for ou website to use it we need to create an endpoint.
+
+### Building an API
+
+To create an endpoint for the lambda function go to:
+Amazon console &rarr; Networking & Content Delivery &rarr; API Gateaway &rarr; Get Started &rarr; OK &rarr; New API &rarr; API name: sentimentAnalysis &rarr; Create API
+
+The API currently doesn't do anything, so we'll need to create some actions:
+Actions &rarr; Create method &rarr; POST &rarr; click on the checkmark
+
+Next we configure our POST action:
+Integration type: Lambda Function &rarr; Check Use Lambda Proxy integration (so it will not do any check on the input data ) &rarr; Lambda Function: sentiment_lambda_function &rarr Save
+
+Now we also need to deploy the API:
+Actions &rarr; Deploy API &rarr; Depoy Stage(environment to deploy to): [New Stage] &rarr; Stage Name: prod &rarr; Deploy
+
+On the top the `URL` will appear. If we send a post request to thie URL, the body of the URL will be sent to our lambda function and our lambda function will return the results of our model. 
+
+
+## Launch the Web App
+We are ready to launch our web app. To get the URL of the app, go to:
+API Gateawa &rarr; sentimentAnalysis &rarr; Stages and the URL is on the top. Copy it. Going back to the IMDB Sentiment Analysis notebook (in Tutorials), select the `index.html` and edit it. Under the form tag, we replace the `action` var with our URL. If we save it, the web app is ready. Check the `index.html`, download and open the file. The app should be working as expected. Type a few reviews and run the model.
+
+Make sure you **SHUT DOWN** the endpoint. Can be doen through the notebook as before, or the console.
+
+We also need to delete the Lamba function and the API.
+
+To delete the Lambda function go to:
+Amazon Console &rarr; Compute &rarr; Lambda &rarr; check sentiment_lambda_function &rarr; Actions &rarr; Delete &rarr; Delete
+
+To delete the API go to:
+Amazon Console &rarr; Networking and Content Delivery &rarr; API Gateaway &rarr; sentimentAnalysis &rarr; Actions &rarr; Delete API &rarr; type the name to cofirm deletion
+
