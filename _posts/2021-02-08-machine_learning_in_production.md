@@ -294,6 +294,19 @@ Endpoit configuration objects are also available in **SageMaker menu** &rarr; **
 Once the endpoint is created, we can see it Under **SageMaker menu** &rarr; **Endpoints**, where we can see the URL, or delete our endpoint. Then we can test the model (send the data to endpoint)
 Notes
 - SageMaker gets the data to the endpoint, and if we want it to, split the data amongst different models.
+- In case you need to aplit the data before feeding them into the model, use :
+```py
+# We split the data into chunks and send each chunk seperately, accumulating the results.
+
+def predict(data, rows=512):
+    split_array = np.array_split(data, int(data.shape[0] / float(rows) + 1))
+    predictions = ''
+    for array in split_array:
+        predictions = ','.join([predictions, xgb_predictor.predict(array).decode('utf-8')])
+    
+    return np.fromstring(predictions[1:], sep=',')
+```
+
 # Hyperparameters Tuning
 
 - SageMaker can run a bunch of models and choose the best one. We have to define how many models to runand the best model method (like rmse).
@@ -363,5 +376,8 @@ The greater the product, the mode similar the documents. The issue is that diffe
 
 $$cos(θ) = \frac{a\cdot b}{|a|\cdot|b|}$$
 
+## Web app for the model to be deployed
 
-
+Issues you need to overcome:
+- The endpoind takes encoded data as input, but the user input on the web app is a string.
+- Security - endpoints provided by sagemaker have limited access.
