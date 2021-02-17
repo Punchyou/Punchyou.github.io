@@ -537,3 +537,268 @@ Amazon Console &rarr; Compute &rarr; Lambda &rarr; check sentiment_lambda_functi
 To delete the API go to:
 Amazon Console &rarr; Networking and Content Delivery &rarr; API Gateaway &rarr; sentimentAnalysis &rarr; Actions &rarr; Delete API &rarr; type the name to cofirm deletion
 
+## Update a model with no downtime
+We can update our model with no downtine, and we can also feed data to multiple models.
+We go with the low-level option for this model, so we can have more contol over the model (Boston Housing - Updating an Endpoint).
+
+After fitting the model (we haven't created the model YET), we set up the configuration of the container:
+
+```py
+xgb_model_name = "boston-update-xgboost-model" + strftime("%Y-%m-%d-%H-%M-%S", gmtime())
+
+# We also need to tell SageMaker which container should be used for inference and where it should
+# retrieve the model artifacts from. In our case, the xgboost container that we used for training
+# can also be used for inference and the model artifacts come from the previous call to fit.
+xgb_primary_container = {
+    "Image": xgb_container,
+    "ModelDataUrl": xgb.model_data
+}
+```
+And we create the model:
+```py
+# And lastly we construct the SageMaker model
+xgb_model_info = session.sagemaker_client.create_model(
+                                ModelName = xgb_model_name,
+                                ExecutionRoleArn = role,
+                                PrimaryContainer = xgb_primary_container)
+```
+Create the endpoint configuration
+```py
+xgb_endpoint_config_name = "boston-update-xgboost-endpoint-config-" + strftime("%Y-%m-%d-%H-%M-%S", gmtime())
+
+# And then we ask SageMaker to construct the endpoint configuration
+xgb_endpoint_config_info = session.sagemaker_client.create_endpoint_config(
+                            EndpointConfigName = xgb_endpoint_config_name,
+                            ProductionVariants = [{
+                                "InstanceType": "ml.m4.xlarge",
+                                "InitialVariantWeight": 1,
+                                "InitialInstanceCount": 1,
+                                "ModelName": xgb_model_name,
+                                "VariantName": "XGB-Model"
+                            }])
+```
+And create and deploy the endpoint:
+```py
+# Again, we need a unique name for our endpoint
+endpoint_name = "boston-update-endpoint-" + strftime("%Y-%m-%d-%H-%M-%S", gmtime())
+
+# And then we can deploy our endpoint
+endpoint_info = session.sagemaker_client.create_endpoint(
+                    EndpointName = endpoint_name,
+                    EndpointConfigName = xgb_endpoint_config_name)
+```
+Finaly, get results back and get the body:
+
+```py
+response = session.sagemaker_runtime_client.invoke_endpoint(
+                                                EndpointName = endpoint_name,
+                                                ContentType = 'text/csv',
+                                                Body = ','.join(map(str, X_test.values[0])))
+result = response['Body'].read().decode("utf-8")
+```
+We can make and deploy a  second model in the same way we have created the first one, using the exact same endpoint.
+
+### Deply a combined model
+n order for us to compare our two models, we can perform an **AB test**. We create a new endpoint, and the the endpoint can decide which model to send the data to. we can use both models on its own production variable. The amount of data to be sent to each model, is determined by the initial variant weight:
+
+```py
+# As before, we need to give our endpoint configuration a name which should be unique
+combined_endpoint_config_name = "boston-combined-endpoint-config-" + strftime("%Y-%m-%d-%H-%M-%S", gmtime())
+
+# And then we ask SageMaker to construct the endpoint configuration
+combined_endpoint_config_info = session.sagemaker_client.create_endpoint_config(
+                            EndpointConfigName = combined_endpoint_config_name,
+                            ProductionVariants = [
+                                { # First we include the linear model
+                                    "InstanceType": "ml.m4.xlarge",
+                                    "InitialVariantWeight": 1,
+                                    "InitialInstanceCount": 1,
+                                    "ModelName": linear_model_name,
+                                    "VariantName": "Linear-Model"
+                                }, { # And next we include the xgb model
+                                    "InstanceType": "ml.m4.xlarge",
+                                    "InitialVariantWeight": 1,
+                                    "InitialInstanceCount": 1,
+                                    "ModelName": xgb_model_name,
+                                    "VariantName": "XGB-Model"
+                                }])
+```
+We can check the endpoint information by:
+```py
+print(session.sagemaker_client.describe_endpoint(EndpointName=endpoint_name))
+```
+
+If we want to change the endpoint to only send data to the linear model, we can do that with `sagemaker_client.update_endpoint`:
+```py
+session.sagemaker_client.update_endpoint(EndpointName=endpoint_name, EndpointConfigName=linear_endpoint_config_name)
+```
+Sagemaker will be reconfigure the endpoint to only have only one production variant, and we will not have any downtime.
+
+## Looking at new Data
+After training and deploying our model, we want to do a quality control of our model, to make sure the accuracy is still in the same levels. To do that we collect a bunch of reviews from our endpoint and label them by hand, and then see what our model says about them.(from mimmi-projects, IMDB Sentiment analysis - XGBoost (Updating a model) notebook)
+We need to encode them and also to make sure that similar words have the same token. Our vocabulary is the most frequent words, and then we cound the number of each of those words. We need to create our bag of words encoding and then train and create the model as we normally do:
+```py
+import new_data
+
+new_X, new_Y = new_data.get_new_data()
+vectorizer = CountVectorizer(vocabulary=vocabulary,
+                preprocessor=lambda x: x, tokenizer=lambda x: x)
+
+#Transform our new data set
+new_XV = vectorizer.transform(new_X).toarray()
+pd.DataFrame(new_XV).to_csv(os.path.join(data_dir, 'new_data.csv'), header=False, index=False)
+
+# upload data
+new_data_location = session.upload_data(os.path.join(data_dir, 'new_data.csv'), key_prefix=prefix)
+
+xgb_transformer.transform(new_data_location, content_type='text/csv', split_type='Line')
+xgb_transformer.wait()
+
+```
+Copy the data to our locar instance
+```
+!aws s3 cp --recursive $xgb_transformer.output_path $data_dir
+```
+and check the performance on the new data:
+```py
+predictions = pd.read_csv(os.path.join(data_dir, 'new_data.csv.out'), header=None)
+predictions = [round(num) for num in predictions.squeeze().values]
+
+accuracy_score(test_Y, predictions)
+
+```
+If we are seeing a lower performance than before, we need to investigate the reviews that have been missclassified.
+```py
+from sagemaker.predictor import csv_serializer
+
+# We need to tell the endpoint what format the data we are sending is in so that SageMaker can perform the serialization.
+xgb_predictor.content_type = 'text/csv'
+xgb_predictor.serializer = csv_serializer
+
+# generator
+def get_sample(in_X, in_XV, in_Y):
+    for idx, smp in enumerate(in_X):
+        res = round(float(xgb_predictor.predict(in_XV[idx])))
+        if res != in_Y[idx]:
+            yield smp, in_Y[idx]
+
+gn = get_sample(new_X, new_XV, new_Y)
+print(next(gn))
+gn = get_sample(new_X, new_XV, new_Y)
+
+```
+Check if the corresponding vocabulary has changed
+```py
+new_vectorizer = CountVectorizer(max_features=5000,
+                preprocessor=lambda x: x, tokenizer=lambda x: x)
+new_vectorizer.fit(new_X)
+original_vocabulary = set(vocabulary.keys())
+new_vocabulary = set(new_vectorizer.vocabulary_.keys())
+
+print(original_vocabulary - new_vocabulary)
+print(new_vocabulary - original_vocabulary)```
+```
+We might also need to chenge the vocabulary in the lambda functions we created earlier.
+
+Encode our dataset:
+```py
+new_XV = new_vectorizer.transform(new_X).toarray()
+```
+And split them
+```py
+new_val_X = pd.DataFrame(new_XV[:10000])
+new_train_X = pd.DataFrame(new_XV[10000:])
+
+new_val_y = pd.DataFrame(new_Y[:10000])
+new_train_y = pd.DataFrame(new_Y[10000:])
+```
+
+And save them locally:
+```py
+pd.DataFrame(new_XV).to_csv(os.path.join(data_dir, 'new_data.csv'), header=False, index=False)
+
+pd.concat([new_val_y, new_val_X], axis=1).to_csv(os.path.join(data_dir, 'new_validation.csv'), header=False, index=False)
+pd.concat([new_train_y, new_train_X], axis=1).to_csv(os.path.join(data_dir, 'new_train.csv'), header=False, index=False)
+```
+Make sure you set not nessesary vars to None
+
+Now you can crete the model:
+```py
+new_xgb = sagemaker.estimator.Estimator(container, # The location of the container we wish to use
+                                    role,                                    # What is our current IAM Role
+                                    train_instance_count=1,                  # How many compute instances
+                                    train_instance_type='ml.m4.xlarge',      # What kind of compute instances
+                                    output_path='s3://{}/{}/output'.format(session.default_bucket(), prefix),
+                                    sagemaker_session=session)
+
+# set the algorithm specific parameters
+new_xgb.set_hyperparameters(max_depth=5,
+                        eta=0.2,
+                        gamma=4,
+                        min_child_weight=6,
+                        subsample=0.8,
+                        silent=0,
+                        objective='binary:logistic',
+                        early_stopping_rounds=10,
+                        num_round=500)
+
+s3_new_input_train = sagemaker.s3_input(s3_data=new_train_location, content_type='csv')
+s3_new_input_validation = sagemaker.s3_input(s3_data=new_val_location, content_type='csv')
+
+new_xgb.fit({'train': s3_new_input_train, 'validation': s3_new_input_validation})
+```
+
+Finally, test the new model. This is data likeage, as we test in the same it has been trained, but we ONLY do that for comparison with the previous data.
+```py
+new_xgb_transformer = new_xgb.transformer(instance_count = 1, instance_type = 'ml.m4.xlarge')
+new_xgb_transformer.transform(new_data_location, content_type='text/csv', split_type='Line')
+new_xgb_transformer.wait()
+
+# Copy the results to our local instance.
+!aws s3 cp --recursive $new_xgb_transformer.output_path $data_dir
+
+# And see how well the model did.
+
+predictions = pd.read_csv(os.path.join(data_dir, 'new_data.csv.out'), header=None)
+predictions = [round(num) for num in predictions.squeeze().values]
+
+accuracy_score(new_Y, predictions)```
+
+
+We might as well want to chek whether our model is behaving ok relatively to the old data, as we don't expect the disctribution of the data has changed that much. 
+
+We follow the similar process for the old data:
+
+```py
+cache_data = None
+with open(os.path.join(cache_dir, "preprocessed_data.pkl"), "rb") as f:
+            cache_data = pickle.load(f)
+            print("Read preprocessed data from cache file:", "preprocessed_data.pkl")
+            
+test_X = cache_data['words_test']
+test_Y = cache_data['labels_test']
+
+# Here we set cache_data to None so that it doesn't occupy memory
+cache_data = None
+```
+
+Create a bag-of-words encoding and upload them:
+```py
+test_X = new_vectorizer.transform(test_X).toarray()
+pd.DataFrame(test_X).to_csv(os.path.join(data_dir, 'test.csv'), header=False, index=False)
+test_location = session.upload_data(os.path.join(data_dir, 'test.csv'), key_prefix=prefix)
+```
+Test the model again:
+```py
+new_xgb_transformer.transform(test_location, content_type='text/csv', split_type='Line')
+new_xgb_transformer.wait()
+!aws s3 cp --recursive $new_xgb_transformer.output_path $data_dir
+predictions = pd.read_csv(os.path.join(data_dir, 'test.csv.out'), header=None)
+predictions = [round(num) for num in predictions.squeeze().values]
+accuracy_score(test_Y, predictions)
+```
+If our model is performing well in both old and new data, we can update the model as before. Remember, in order to update en endpoint, we need to crete a new endpoint configuration, and we need to know the name of the mode. Make sure you delete the endpoint at the end. Also make sure you delete any notebook, s3 bucket, lambda or API Gateway.
+
+
+
+
