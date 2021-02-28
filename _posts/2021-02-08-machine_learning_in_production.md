@@ -148,7 +148,7 @@ session.upload_data(os.path.join(data_dir, 'test.csv'), key_prefix=prefix)
 ```
 This uploads the file to the S3 bucket associated with this session.
 
-- You can also print your role (defines how data that your notebook uses/creates will be stotred)
+ You can also print your role (defines how data that your notebook uses/creates will be stotred)
 `print(role)`
 
 - Different containers are created for different regions and models we choose to use. Amazon provides us with a function that can print the container uri, if we pass the region and the model as arguments:
