@@ -2,7 +2,7 @@
 layout: post
 title: Machine Learning Case Studies
 author: Maria Pantsiou
-date: '2021-02-08 14:35:23 +0530'
+date: '2021-02-24 14:35:23 +0530'
 category: AI
 summary: Machine Learning Case Studies
 thumbnail: blue_light_purple_cude.png
