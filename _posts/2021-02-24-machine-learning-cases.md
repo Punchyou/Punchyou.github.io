@@ -5,7 +5,7 @@ author: Maria Pantsiou
 date: '2021-02-24 14:35:23 +0530'
 category: AI
 summary: Machine Learning Case Studies
-thumbnail: blue_light_purple_cude.png
+thumbnail: light_circles2.png
 
 ---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
