@@ -1,0 +1,208 @@
+<!DOCTYPE html> <html lang=" en "><head> <meta charset="utf-8"> <title>Maria Pantsiou - Software Developer @ARM</title> <meta http-equip="X-UA-Compatible" content="IE=edge"> <meta name="viewport" content="width=device-width, initial-scale=1"> <meta name="description" content="PyTorch Basics" /> <meta name="keywords" content="PyTorch Basics, Maria Pantsiou, AI" /> <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml"> <meta content="" property="fb:app_id"> <meta content="Maria Pantsiou" property="og:site_name"> <meta content="PyTorch Basics" property="og:title"> <meta content="article" property="og:type"> <meta content="PyTorch Basics" property="og:description"> <meta content="/ai/2020/09/26/pytorch_basics/" property="og:url"> <meta content="2020-09-26T09:05:23+00:00" property="article:published_time"> <meta content="/about/" property="article:author"> <meta content="AI" property="article:section"> <meta name="twitter:card" content="summary"> <meta name="twitter:site" content="@"> <meta name="twitter:creator" content="@"> <meta name="twitter:title" content="PyTorch Basics"> <meta content="Maria Pantsiou" property="og:site_name"> <meta name="twitter:url" content="/ai/2020/09/26/pytorch_basics/"> <meta name="twitter:description" content="devlopr-jekyll is a Jekyll Theme Built For Developers"> <link rel="stylesheet" href="/assets/css/main.css" /> <link rel="stylesheet" href="/assets/css/custom-style.css" /> <link rel="stylesheet" href="/assets/bower_components/lightgallery/dist/css/lightgallery.min.css"/> <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.css" /> <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.css"> <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch-theme-algolia.min.css"> <link rel="stylesheet" href="/assets/bower_components/bootstrap/dist/css/bootstrap.min.css" /> <link rel="stylesheet" href="/assets/bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css" /> <!-- Fonts--> <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet"> <!-- Favicon --> <link rel="icon" href="/assets/img/favicon.ico" type="image/gif" sizes="16x16"> <!-- Jquery --> <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-vk5WoKIaW/vJyUAd9n/wmopsmNhiy+L2Z+SBxGYnUkunIxVxAv/UtMOhba/xskxh" crossorigin="anonymous"></script> <!-- <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script> --> <script src="/assets/bower_components/jquery.easing/jquery.easing.min.js"></script> <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script> <script src="/assets/bower_components/jquery-mousewheel/jquery.mousewheel.min.js"></script> <script src="/assets/bower_components/lightgallery/dist/js/lightgallery-all.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/picturefill/3.0.2/picturefill.min.js"></script> <script src="/assets/bower_components/imagesloaded/imagesloaded.pkgd.min.js"></script> <script src="/assets/bower_components/nanobar/nanobar.min.js"></script> <script src="/assets/bower_components/typewrite/dist/typewrite.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.0/dist/instantsearch.min.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script> <!-- Github Button --> <script async defer src="https://buttons.github.io/buttons.js"></script> <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> <script> (function (i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o), m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m) })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga'); ga('create', '', 'auto'); ga('send', 'pageview'); </script> </head> <body> <div class="container-fluid"><header> <div class="col-lg-12"> <div class="row"> <nav class="navbar navbar-expand-lg fixed-top navbar-dark " id="topNav"> <!-- <a class="navbar-brand" href="#">Maria Pantsiou</a> --> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> <a class="navbar-brand" href="/">Maria Pantsiou</a> <div class="collapse navbar-collapse" id="navbarNav"> <ul class="navbar-nav"> <li class="nav-item"> <a class="nav-link" href="/about">About Me</a> </li> <li class="nav-item"> <a class="nav-link" href="/blog">Blog</a> </li> </ul> </div> <ul class="nav justify-content-end"> <li class="nav-item"> <a class="nav-link" id="search-icon" href="/search/"><i class="fa fa-search" aria-hidden="true"></i></a> </li> <li class="nav-item"> <input class="nav-link switch" id="theme-toggle" onclick="modeSwitcher() "type="checkbox" name="checkbox" > </li> </ul> </nav> </div> </div> </header><div class="col-lg-12"> <!-- Blog Post Breadcrumbs --><div class="col-lg-12"> <nav aria-label="breadcrumb" role="navigation"> <ol class="breadcrumb"> <li class="breadcrumb-item"> <a href="/blog"><i class="fa fa-home" aria-hidden="true"></i></a> </li> <li class="breadcrumb-item active" aria-current="page"><a href="/ai/2020/09/26/pytorch_basics/">PyTorch Basics</a></li> </ol> </nav> </div> <div class="row" id="blog-post-container"> <div class="col-lg-8 offset-md-2"><article class="card" itemscope itemtype="http://schema.org/BlogPosting"> <div class="card-header"> <!-- <h1 class="post-title" itemprop="name headline">PyTorch Basics</h1> --> <h4 class="post-meta">PyTorch Basics</h4> <p class="post-summary">Posted by : <img src="/assets/img/avatar.png" class="author-profile-img"> <span itemprop="author" itemscope itemtype="http://schema.org/Person"> <span itemprop="name">Maria Pantsiou</span> </span> at <time datetime="2020-09-26 09:05:23 +0000" itemprop="datePublished">Sep 26, 2020</time> </p> <span class="disqus-comment-count" data-disqus-identifier="/ai/2020/09/26/pytorch_basics/"></span> <div class="post-categories"> Category : <a href="/blog/categories/AI">AI</a> </div> </div> <div class="card-body" itemprop="articleBody"> <img class="card-img-top" src="/assets/img/posts/triangles_background.png" alt=""> <br/> <br/> <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> <script type="text/x-mathjax-config"> MathJax.Hub.Config({ tex2jax: { skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'], displayMath: [['$$','$$']], inlineMath: [['$','$']], }, }); </script> <h1 id="pytorch">PyTorch</h1> <p>Time to upgrade my skills in ML, and since COVID-19 cases are rising and new restrictions are now in place, decided to do some learning while missing my social life and friends :(</p> <h2 id="why-pytorch">Why PyTorch?</h2> <p>Seems that it’s like NumPy on the GPU that can parrallelize operations, so super efficient. (Also, I’m considering taking the Machine Learning Engineer Course on Udacity, and they are doing everything in PyTorch there, so win-win!) Some of the pros I’ve descivered are:</p> <ol> <li>Tensor (multidimentional array) processing</li> <li>Efficient Data Loading</li> <li>Deep Learning Functions</li> <li>Distributed Training</li> <li>Provides Dynamic Computational Graphs</li> <li>More Strong in Academia than ndustry (as TensorFlow provides additional deployment tools)</li> </ol> <h2 id="pytorch-data-structures">PyTorch Data Structures</h2> <p>In math, the generalization of vectors and matrices to a higher dimensional space - a tensonthe generalization of vectors and matrices to a higher dimensional space - a <strong>tensor</strong>.</p> <h4 id="tensor">Tensor:</h4> <p>It’s an entity with a defined number of dimensions called an order (<strong>rank</strong>).</p> <h4 id="scalars">Scalars:</h4> <p>A rank-0-tensor. Let’s denote scalar value as $x∈ℝ$, where $ℝ$ is a set of real numbers.</p> <h4 id="vectors">Vectors:</h4> <p>A rank-1-tensor. Vectors belong to linear space (vector space), a set of possible vectors of a specific length. A vector consisting of real-valued scalars $x∈ℝ$ can be defined as $y∈ℝ^n$, where $y$ is vector value and $ℝ^n$ - nn-dimensional real-number vector space. $y_i$ - $i_{th}$ vector element (scalar): <script type="math/tex">y = \begin{bmatrix} x_{1} \\ x_{2} \\ \vdots \\ x_{n} \end{bmatrix}</script></p> <h4 id="matrices">Matrices:</h4> <p>A rank-2-tensor. A matrix of size $m \times n$, where $m, n \in \mathbb{N}$ (rows and columns number accordingly) consisting of real-valued scalars can be denoted as $A \in \mathbb{R}^{m \times n}$, where $\mathbb{R}^{m \times n}$ is a real-valued $m \times n$-dimensional vector space:</p> <script type="math/tex; mode=display">% <![CDATA[ A = \begin{bmatrix} x_{11} & x_{12} & x_{13} & \dots & x_{1n} \\ x_{21} & x_{22} & x_{23} & \dots & x_{2n} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ x_{m1} & x_{m2} & x_{m3} & \dots & x_{mn} \end{bmatrix} %]]></script> <h2 id="code-basics">Code Basics</h2> <h3 id="examples">Examples</h3> <p>First, we import the libraries that we need and set a random seed.</p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+
+<span class="c1"># set seed
+</span><span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div></div> <h3 id="pytorch-and-numpy">PyTorch and NumPy</h3> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># rank-2 (2d) tensor - float is default
+</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+
+<span class="c1"># rank-3 tensor
+</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+
+<span class="c1"># rank-4 tensor
+</span><span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># create tensor from lists and np arrays
+</span><span class="n">python_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Create a numpy array from python list
+</span><span class="n">numpy_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+
+<span class="c1"># Create a torch Tensor from python list
+</span><span class="n">tensor_from_list</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">python_list</span><span class="p">)</span>
+
+<span class="c1"># Create a torch Tensor from Numpy array (compies memory)
+</span><span class="n">tensor_from_array</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">numpy_array</span><span class="p">)</span>
+
+<span class="c1"># Another way to create a torch Tensor from Numpy array (Share same storage)
+</span><span class="n">tensor_from_array_v2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">numpy_array</span><span class="p">)</span>
+
+<span class="c1"># Convert torch tensor to numpy array
+</span><span class="n">array_from_tensor</span> <span class="o">=</span> <span class="n">tensor_from_array</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'List:   '</span><span class="p">,</span> <span class="n">python_list</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Array:  '</span><span class="p">,</span> <span class="n">numpy_array</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Tensor: '</span><span class="p">,</span> <span class="n">tensor_from_list</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Tensor: '</span><span class="p">,</span> <span class="n">tensor_from_array</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Tensor: '</span><span class="p">,</span> <span class="n">tensor_from_array_v2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Array:  '</span><span class="p">,</span> <span class="n">array_from_tensor</span><span class="p">)</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+List:    <span class="o">[</span>1, 2]
+Array:   <span class="o">[</span>1 2]
+Tensor:  tensor<span class="o">([</span>1, 2]<span class="o">)</span>
+Tensor:  tensor<span class="o">([</span>1, 2]<span class="o">)</span>
+Tensor:  tensor<span class="o">([</span>1, 2]<span class="o">)</span>
+Array:   <span class="o">[</span>1 2]
+</code></pre></div></div> <h3 id="differnce-between-torchtensor-and-torchfrom_numpy">Differnce between torch.Tensor and torch.from_numpy</h3> <p>Pytorch aims to be an effective library for computations and avoids memory copying if it can:</p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">numpy_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Array:  '</span><span class="p">,</span> <span class="n">numpy_array</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Tensor: '</span><span class="p">,</span> <span class="n">tensor_from_array</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Tensor: '</span><span class="p">,</span> <span class="n">tensor_from_array_v2</span><span class="p">)</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+Array:   <span class="o">[</span>10  2]
+Tensor:  tensor<span class="o">([</span>1, 2]<span class="o">)</span>
+Tensor:  tensor<span class="o">([</span>10,  2]<span class="o">)</span>
+</code></pre></div></div> <p>It also works the opposite way</p> <h3 id="indexing">Indexing</h3> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># rank-1
+</span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">(</span>0.7936<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># select two elements
+</span><span class="n">a</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">([</span>0.7936, 0.1332]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># select three elements with a mask
+</span><span class="n">a</span><span class="p">[[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">]]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">([</span>0.6009, 0.9408, 0.1332]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># rank-2
+</span><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">tensor</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">([[</span>0.2695, 0.3588, 0.1994],
+       <span class="o">[</span>0.5472, 0.0062, 0.9516],
+       <span class="o">[</span>0.0753, 0.8860, 0.5832],
+       <span class="o">[</span>0.3376, 0.8090, 0.5779],
+       <span class="o">[</span>0.9040, 0.5547, 0.3423]]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#select row
+</span><span class="n">tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">([</span>0.2695, 0.3588, 0.1994]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># select element
+</span><span class="n">tensor</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+Output:
+tensor<span class="o">(</span>0.1994<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># select rows
+</span><span class="n">rows</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">rows</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([</span>0, 2, 4]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span><span class="p">[</span><span class="n">rows</span><span class="p">]</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>0.2695, 0.3588, 0.1994],
+       <span class="o">[</span>0.0753, 0.8860, 0.5832],
+       <span class="o">[</span>0.9040, 0.5547, 0.3423]]<span class="o">)</span>
+</code></pre></div></div> <h3 id="tensor-shapes">Tensor Shapes</h3> <p>We can reshape a tensor without the memory copying overhead. There are two methods for that: <code class="language-plaintext highlighter-rouge">reshape</code> and <code class="language-plaintext highlighter-rouge">view</code>. The difference is the following:</p> <ol> <li><code class="language-plaintext highlighter-rouge">view</code> tries to return the tensor, and it shares the same memory with the original tensor. In case, if it cannot reuse the same memory due to some reasons, it just fails.</li> <li><code class="language-plaintext highlighter-rouge">reshape</code> always returns the tensor with the desired shape and tries to reuse the memory. If it cannot, it creates a copy. <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">tensor</span>
+</code></pre></div> </div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[[</span>0.6343, 0.3644, 0.7104, 0.9464],
+     <span class="o">[</span>0.7890, 0.2814, 0.7886, 0.5895],
+     <span class="o">[</span>0.7539, 0.1952, 0.0050, 0.3068]],
+
+    <span class="o">[[</span>0.1165, 0.9103, 0.6440, 0.7071],
+     <span class="o">[</span>0.6581, 0.4913, 0.8913, 0.1447],
+     <span class="o">[</span>0.5315, 0.1587, 0.6542, 0.3278]]]<span class="o">)</span>
+</code></pre></div> </div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Pointer to data: '</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Shape: '</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div> </div> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Pointer to data:  80622400
+Shape:  torch.Size([2, 3, 4])
+</code></pre></div> </div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">reshaped</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">reshaped</span>
+</code></pre></div> </div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([</span>0.6343, 0.3644, 0.7104, 0.9464, 0.7890, 0.2814, 0.7886, 0.5895, 0.7539,
+    0.1952, 0.0050, 0.3068, 0.1165, 0.9103, 0.6440, 0.7071, 0.6581, 0.4913,
+    0.8913, 0.1447, 0.5315, 0.1587, 0.6542, 0.3278]<span class="o">)</span>
+</code></pre></div> </div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">view</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">view</span>
+</code></pre></div> </div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[[</span>0.6343, 0.3644, 0.7104, 0.9464],
+     <span class="o">[</span>0.7890, 0.2814, 0.7886, 0.5895]],
+
+    <span class="o">[[</span>0.7539, 0.1952, 0.0050, 0.3068],
+     <span class="o">[</span>0.1165, 0.9103, 0.6440, 0.7071]],
+
+    <span class="o">[[</span>0.6581, 0.4913, 0.8913, 0.1447],
+     <span class="o">[</span>0.5315, 0.1587, 0.6542, 0.3278]]]<span class="o">)</span>
+</code></pre></div> </div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># return adresses
+</span><span class="k">print</span><span class="p">(</span><span class="s">'Reshaped tensor - pointer to data'</span><span class="p">,</span> <span class="n">reshaped</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Reshaped tensor shape '</span><span class="p">,</span> <span class="n">reshaped</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Viewed tensor - pointer to data'</span><span class="p">,</span> <span class="n">view</span><span class="o">.</span><span class="n">data_ptr</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'Viewed tensor shape '</span><span class="p">,</span> <span class="n">view</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div> </div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reshaped tensor - pointer to data 80622400
+Reshaped tensor shape  torch.Size<span class="o">([</span>24]<span class="o">)</span>
+Viewed tensor - pointer to data 80622400
+Viewed tensor shape  torch.Size<span class="o">([</span>3, 2, 4]<span class="o">)</span>
+</code></pre></div> </div> <p>```py</p> <h1 id="assert-if-the-original-and-the-view-tensor-have-the-same-memory-adress">assert if the original and the view tensor have the same memory adress</h1> <p>assert tensor.data_ptr() == view.data_ptr()</p> <h1 id="assert-is-flatted-tensor-and-reshapes-are-the-same">assert is flatted tensor and reshapes are the same</h1> <p>assert np.all(np.equal(tensor.numpy().flat, reshaped.numpy().flat))</p> </li> </ol> <h1 id="print-stride---the-jump-necessary-to-go-from-one-element-to-the-next-one-in-the-specified-dimension-dim">print stride - the jump necessary to go from one element to the next one in the specified dimension dim</h1> <p>print(‘Original stride: ‘, tensor.stride()) print(‘Reshaped stride: ‘, reshaped.stride()) print(‘Viewed stride: ‘, view.stride())</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>```sh
+Original stride:  (12, 4, 1)
+Reshaped stride:  (1,)
+Viewed stride:  (8, 4, 1)
+</code></pre></div></div> <p>If we have a multi-dimentional <code class="language-plaintext highlighter-rouge">tensor</code> and a <code class="language-plaintext highlighter-rouge">mask</code> of different dimentions we can use <code class="language-plaintext highlighter-rouge">expand_as</code> operation to create a <code class="language-plaintext highlighter-rouge">view</code> of the <code class="language-plaintext highlighter-rouge">mask</code> that has the same dimensions as the tensor we want to apply it to, but has not copied the data.</p> <h3 id="autograd">Autograd</h3> <p>Pytorch supports automatic differentiation the <code class="language-plaintext highlighter-rouge">Autograd</code> module. It calculates the gradients and keeps track in forward and backward passes. For primitive tensors, you need to enable <code class="language-plaintext highlighter-rouge">requires_grad</code> flag. For advanced tensors, it is enabled by default.</p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">a</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>0.3470, 0.0240, 0.7797, 0.1519, 0.7513],
+       <span class="o">[</span>0.7269, 0.8572, 0.1165, 0.8596, 0.2636],
+       <span class="o">[</span>0.6855, 0.9696, 0.4295, 0.4961, 0.3849]], <span class="nv">requires_grad</span><span class="o">=</span>True<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="n">result</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>1.7351, 0.1200, 3.8987, 0.7595, 3.7565],
+       <span class="o">[</span>3.6345, 4.2861, 0.5824, 4.2980, 1.3181],
+       <span class="o">[</span>3.4277, 4.8478, 2.1474, 2.4807, 1.9244]], <span class="nv">grad_fn</span><span class="o">=</span>&lt;MulBackward0&gt;<span class="o">)</span>
+</code></pre></div></div> <p><code class="language-plaintext highlighter-rouge">grad</code> can be implicitly created only for scalar outputs</p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># we use sum to make it scalar to apply backward pass
+</span><span class="n">mean_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="c1"># Calculate Gradient
+</span><span class="n">mean_result</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="c1"># gradient of a
+</span><span class="n">a</span><span class="o">.</span><span class="n">grad</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>5., 5., 5., 5., 5.],
+       <span class="o">[</span>5., 5., 5., 5., 5.],
+       <span class="o">[</span>5., 5., 5., 5., 5.]]<span class="o">)</span>
+</code></pre></div></div> <p>We multiplied an input by 5, so as expected the calculated gradient is 5.</p> <h4 id="disable-autograd">Disable autograd</h4> <p>We don’t need to compute gradients for all the variables that are involved in the pipeline. The Pytorch API provides 2 ways to disable autograd.</p> <ol> <li><code class="language-plaintext highlighter-rouge">detach</code> - returns a <em>copy built on the same memory</em> of the tensor with autograd disabled. In-place size/stride/storage changes modifications are not allowed.</li> <li><code class="language-plaintext highlighter-rouge">torch.no_grad()</code> - It is a <strong>context manager</strong> that allows you to guard a series of operations from autograd without creating new tensors.</li> </ol> <p><em>Context managers allow you to allocate and release resources precisely when you want to. The most widely used example of context managers is the with statement.</em></p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">detached_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+<span class="n">a</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>0.0323, 0.7047, 0.2545, 0.3994, 0.2122],
+       <span class="o">[</span>0.4089, 0.1481, 0.1733, 0.6659, 0.3514],
+       <span class="o">[</span>0.8087, 0.3396, 0.1332, 0.4118, 0.2576]], <span class="nv">requires_grad</span><span class="o">=</span>True<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">detached_a</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>0.0323, 0.7047, 0.2545, 0.3994, 0.2122],
+       <span class="o">[</span>0.4089, 0.1481, 0.1733, 0.6659, 0.3514],
+       <span class="o">[</span>0.8087, 0.3396, 0.1332, 0.4118, 0.2576]]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">detached_result</span> <span class="o">=</span> <span class="n">detached_a</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">10</span>
+</code></pre></div></div> <p>Same as before, we cannot do backward pass that is required for autograd using multideminsional output, so we calculate the sum</p> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="n">mean_result</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">grad</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>10., 10., 10., 10., 10.],
+       <span class="o">[</span>10., 10., 10., 10., 10.],
+       <span class="o">[</span>10., 10., 10., 10., 10.]]<span class="o">)</span>
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">detached_result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">detached_result</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>0.4125, 3.6998, 0.0182, 4.0520, 4.3706],
+       <span class="o">[</span>4.8643, 1.9103, 0.4459, 3.0621, 3.8811],
+       <span class="o">[</span>0.0117, 1.9325, 1.0014, 2.2813, 1.2695]]<span class="o">)</span>
+
+</code></pre></div></div> <div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mean_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+<span class="n">mean_result</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">grad</span>
+</code></pre></div></div> <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Output:
+tensor<span class="o">([[</span>10., 10., 10., 10., 10.],
+       <span class="o">[</span>10., 10., 10., 10., 10.],
+       <span class="o">[</span>10., 10., 10., 10., 10.]]<span class="o">)</span>
+</code></pre></div></div> <p>Again, we multiplied <code class="language-plaintext highlighter-rouge">result</code> by 10, so as expected, the <code class="language-plaintext highlighter-rouge">grad</code> is 10.</p> <p>Sources:</p> <ol> <li><a href="courses.opencv.org">OpenCV Courses</a></li> <li><a href="https://pytorch.org/docs/stable/random.html">PyTorch Docs</a></li> </ol> </div> <div id="disqus_thread"></div> </article> <script> var disqus_config = function () { this.page.url = "/ai/2020/09/26/pytorch_basics/"; /* Replace PAGE_URL with your page's canonical URL variable */ this.page.identifier = "/ai/2020/09/26/pytorch_basics"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */ }; (function () { /* DON'T EDIT BELOW THIS LINE */ var d = document, s = d.createElement('script'); s.src = 'https://.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a> </noscript></div> </div> <!-- End of row--> <div class="row"> <div class="col-md-4"> <div class="card"> <div class="card-header"> About </div> <div class="card-body"> <!-- Your Bio --> <p class="author_bio"> Hello, My Name is Maria.</p> </div> </div> </div> <div class="col-md-4"> <div class="card"> <div class="card-header">Categories </div> <div class="card-body text-dark"> <div id="#guides"></div> <li class="tag-head"> <a href="/blog/categories/guides">guides</a> </li> <a name="guides"></a> <div id="#dataScience"></div> <li class="tag-head"> <a href="/blog/categories/dataScience">dataScience</a> </li> <a name="dataScience"></a> <div id="#devops"></div> <li class="tag-head"> <a href="/blog/categories/devops">devops</a> </li> <a name="devops"></a> <div id="#resources"></div> <li class="tag-head"> <a href="/blog/categories/resources">resources</a> </li> <a name="resources"></a> <div id="#AI"></div> <li class="tag-head"> <a href="/blog/categories/AI">AI</a> </li> <a name="AI"></a> </div> </div> </div> <div class="col-md-4"> <div class="card"> <div class="card-header">Useful Links </div> <div class="card-body text-dark"> <li > <a href="/about">About Me</a> </li> <li > <a href="/blog">Blog</a> </li> </div> </div> </div> </div> </div> </div> <footer> <p> Powered by<a href="https://github.com/sujaykundu777/devlopr-jekyll"> devlopr jekyll</a>. Hosted at <a href="https://pages.github.com">Github</a>. Subscribe via <a href=" /feed.xml ">RSS</a> </p> </footer> </div> <script> var options = { classname: 'my-class', id: 'my-id' }; var nanobar = new Nanobar( options ); nanobar.go( 30 ); nanobar.go( 76 ); nanobar.go(100); </script> <div hidden id="snipcart" data-api-key="Y2I1NTAyNWYtMTNkMy00ODg0LWE4NDItNTZhYzUxNzJkZTI5NjM3MDI4NTUzNzYyMjQ4NzU0"></div> <script src="https://cdn.snipcart.com/themes/v3.0.0-beta.3/default/snipcart.js" defer></script> <script src="/assets/js/mode-switcher.js"></script> </body> </html>
